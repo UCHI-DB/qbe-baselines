@@ -58,8 +58,9 @@
 |          | Join | Projection | Selection | Aggregation |
 | -------- | :--: | :--------: | :-------: | :---------: |
 | S4       |  ⭕️   |            |           |             |
-| REGAL+   |  ⭕️   |     ⭕️      |     ⭕️     |      ⭕️      |
+| REGAL+   |  ⭕️*  |     ⭕️      |     ⭕️     |      ⭕️      |
 | FastQRE  |  ⭕️   |     ⭕️      |           |             |
 | SQuID    |  ⭕️   |     ⭕️      |     ⭕️     |      ⭕️      |
 | DuoQuest |  ⭕️   |     ⭕️      |     ⭕️     |      ⭕️      |
 
+*REGAL does not support join queries, but REGAL+ does.
