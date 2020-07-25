@@ -1,0 +1,3 @@
+[submodule "enum/syntaxSQL"]
+	path = enum/syntaxSQL
+	url = git@github.com:chrisjbaik/syntaxSQL.git

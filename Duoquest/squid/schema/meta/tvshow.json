@@ -1,0 +1,23 @@
+{
+  "dimensionObject": ["TV_series", "Cartoon", "TV_channel", "country",
+    "content", "pack_opt", "air_date", "pixel"],
+  "dimensionConcept": [],
+  "factObjectObject": ["channel_to_cartoon", "series_to_channel",
+    "channel_to_country", "channel_to_content",
+      "channel_to_pack_opt", "series_to_air_date",
+      "channel_to_pixel"],
+  "factObjectConcept": [],
+  "conceptWithinDimension": ["cartoon:directed_by", "cartoon:written_by"],
+  "primaryAttributeWithinDimension": ["TV_Channel:series_name",
+    "TV_series:Episode", "Cartoon:Title", "content:content",
+    "pack_opt:pack_opt", "air_date:air_date", "country:country", "pixel:pixel"
+  ],
+  "additionalFreqConcept": [],
+  "attributeChanges": [
+    ["TV_Channel:content", "content:content"],
+    ["TV_Channel:Package_Option", "pack_opt:pack_opt"],
+    ["TV_series:air_date", "air_date:air_date"],
+    ["TV_Channel:Country", "country:country"],
+    ["TV_Channel:pixel_aspect_ratio_par", "pixel:pixel"]
+  ]
+}

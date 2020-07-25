@@ -1,0 +1,7 @@
+venv
+__pycache__
+*.out
+*.db
+.DS_Store
+enum
+data/

@@ -1,0 +1,243 @@
+syntax = "proto3";
+
+//------------------
+// MAIN INTERFACE
+//------------------
+message ProtoTask {
+  string id = 1;
+  string dataset = 2;
+  string mode = 3;
+
+  string db_name = 4;
+  repeated string nlq_tokens = 5;
+  ProtoLiteralList literals = 6;
+
+  string tsq_level = 8;
+  int32 timeout = 9;
+
+  bool minimal_join_paths = 10;
+}
+
+message ProtoCandidates {
+  repeated ProtoQuery cqs = 1;
+}
+
+message ProtoQueryList {
+  repeated ProtoQuery queries = 1;
+}
+
+message ProtoResult {
+  repeated Tribool results = 1;
+  bool answer_found = 2;
+}
+
+message ProtoExperiment {
+  ProtoQuery gold = 1;
+  repeated ProtoQuery cqs = 2;
+  float time = 3;
+}
+
+message ProtoExperimentSet {
+  repeated ProtoExperiment exps = 1;
+}
+
+//------------------
+// SCHEMA
+//------------------
+message ProtoSchema {
+  string name = 1;
+  repeated ProtoTable tables = 2;
+  repeated ProtoFKPK fkpks = 3;
+}
+
+message ProtoTable {
+  int32 id = 1;
+  string syn_name = 2;
+  string sem_name = 3;
+  repeated ProtoColumn columns = 4;
+}
+
+message ProtoColumn {
+  int32 id = 1;
+  bool is_pk = 2;
+  string syn_name = 3;
+  string sem_name = 4;
+  ProtoColumnType type = 5;
+}
+
+message ProtoFKPK {
+  int32 fk_col_id = 1;
+  int32 pk_col_id = 2;
+}
+
+enum ProtoColumnType {
+  COL_TEXT = 0;
+  COL_NUMBER = 1;
+  COL_TIME = 2;
+  COL_BOOLEAN = 3;
+}
+
+//-------------------
+// LITERALS
+//-------------------
+message ProtoLiteralList {
+  repeated ProtoTextLiteral text_lits = 1;
+  repeated string num_lits = 2;
+}
+
+message ProtoTextLiteral {
+  repeated int32 col_id = 1;
+  string value = 2;
+}
+
+
+//-------------------
+// TABLE SKETCH QUERY
+//-------------------
+message ProtoTSQ {
+  int32 num_cols = 1;
+  bool order = 2;
+  int32 limit = 3;
+  repeated ProtoColumnType types = 4;
+  repeated ProtoTSQRow rows = 5;
+}
+
+message ProtoTSQRow {
+  repeated string cells = 1;
+}
+
+//------------------
+// SQL (PARTIAL) QUERY
+//------------------
+message ProtoQuery {
+  // Whether this query contains a set operation
+  SetOp set_op = 1;
+
+  // Query structure
+  Tribool has_where = 2;
+  Tribool has_group_by = 3;
+  Tribool has_having = 4;
+  Tribool has_order_by = 5;
+  Tribool has_limit = 6;
+
+  // Query data
+  ProtoJoinPath from_clause = 7;
+  repeated AggregatedColumn select = 8;
+  SelectionClause where = 9;
+  repeated int32 group_by = 10;
+  SelectionClause having = 11;
+  repeated OrderedColumn order_by = 12;
+  int32 limit = 13;
+
+  // Subqueries if set operation exists
+  ProtoQuery left = 14;
+  ProtoQuery right = 15;
+
+  // If select requires DISTINCT prefix
+  bool distinct = 16;
+
+  // If clauses completed or not
+  bool done_select = 17;
+  bool done_where = 18;
+  bool done_group_by = 19;
+  bool done_having = 20;
+  bool done_order_by = 21;
+  bool done_limit = 22;
+  bool done_query = 28;
+
+  // Helps with SyntaxSQLNet state. The minimum amount of each element that
+  // this partial query will complete to.
+  int32 min_select_cols = 23;
+  int32 min_where_preds = 24;
+  int32 min_group_by_cols = 25;
+  int32 min_having_preds = 26;
+  int32 min_order_by_cols = 27;
+}
+
+message ProtoJoinPath {
+  ProtoJoinEdgeList edge_list = 1;
+  map<int32, ProtoJoinEdgeList> edge_map = 2;  // tbl_id -> ProtoJoinEdgeList
+}
+
+message ProtoJoinEdgeList {
+  repeated ProtoJoinEdge edges = 1;
+}
+
+message ProtoJoinEdge {
+  int32 fk_col_id = 1;
+  int32 pk_col_id = 2;
+}
+
+message AggregatedColumn {
+  int32 col_id = 1;
+  Tribool has_agg = 2;
+  Aggregate agg = 3;
+}
+
+message OrderedColumn {
+  AggregatedColumn agg_col = 1;
+  OrderDirection dir = 2;
+}
+
+message SelectionClause {
+  repeated Predicate predicates = 1;
+  LogicalOp logical_op = 2;
+}
+
+message Predicate {
+  int32 col_id = 1;
+  Op op = 2;
+
+  Tribool has_subquery = 3;
+  repeated string value = 4;  // Multiple values for IN, NOT IN, BETWEEN
+  ProtoQuery subquery = 5;    // If value is subquery instead
+
+  Tribool has_agg = 6;
+  Aggregate agg = 7;          // Only applicable for HAVING
+}
+
+// ENUMERATIONS
+enum Tribool {
+  UNKNOWN = 0;                // UNKNOWN is default initial state
+  FALSE = 1;
+  TRUE = 2;
+}
+
+enum SetOp {
+  NO_SET_OP = 0;
+  INTERSECT = 1;
+  EXCEPT = 2;
+  UNION = 3;
+}
+
+enum Aggregate {
+  NO_AGG = 0;
+  MAX = 1;
+  MIN = 2;
+  COUNT = 3;
+  SUM = 4;
+  AVG = 5;
+}
+
+enum LogicalOp {
+  AND = 0;
+  OR = 1;
+}
+
+enum Op {
+  EQUALS = 0;
+  GT = 1;
+  LT = 2;
+  GEQ = 3;
+  LEQ = 4;
+  NEQ = 5;
+  LIKE = 6;
+  IN = 7;
+  NOT_IN = 8;
+  BETWEEN = 9;
+}
+
+enum OrderDirection {
+  ASC = 0;
+  DESC = 1;
+}

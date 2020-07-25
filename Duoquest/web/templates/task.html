@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block title %}Task Info{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='libs/tagify.css') }}">
+{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='libs/tagify.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/task.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/task_form.js') }}"></script>
+{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{{ url_for('tasks') }}">Tasks</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ task['tid'] }}</li>
+  </ol>
+</nav>
+<h3>Query</h3>
+{% with tsq = task['tsq'] %}
+  {% include 'components/task_form.html' %}
+{% endwith %}
+
+<h3>Results</h3>
+<div class='mb-3'>
+  <button id="rerun-task" data-tid="{{ task['tid'] }}" class="btn btn-success" {% if task['status'] != 'done' %}disabled{% endif %}>Rerun Task</button>
+  <button id="stop-task" data-tid="{{ task['tid'] }}" class="btn btn-danger" {% if task['status'] != 'running' %}disabled{% endif %}>Stop Task</button>
+</div>
+<div class='mb-3'>
+  <div class="accordion mb-3" id='task-results' data-offset="0" data-tid="{{ task['tid'] }}" data-status="{{ task['status'] }}">
+  </div>
+  <div id="task-results-error" class="alert alert-danger" role="alert" style="display: none">
+    {% if task['error_msg'] %}
+    Error: {{ task['error_msg'] }}
+    {% else %}
+    Error: please refresh the page or try running the task again.
+    {% endif %}
+  </div>
+  <div id="task-results-waiting" class="alert alert-info" style="display: none">Task has not started executing yet...</div>
+  <div id="task-results-spinner" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

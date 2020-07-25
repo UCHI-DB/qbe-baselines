@@ -1,0 +1,33 @@
+[db]
+# Note: Use absolute paths, as relative paths may break!
+path = duoquest.db
+
+[redis]
+host = localhost
+port = 6379
+
+[nlq]
+host = localhost
+port = 6000
+authkey = duoquest
+
+[duoquest]
+host = localhost
+port = 6001
+authkey = duoquest
+results_dir = results
+
+[spider]
+# Note: Use absolute paths, as relative paths may break!
+dev_path = ../data/spider/dev.json
+dev_db_path = ../data/spider/database
+dev_tables_path = ../data/spider/tables.json
+
+test_path = ../data/spider_test/test.json
+test_db_path = ../data/spider_test/database
+test_tables_path = ../data/spider_test/tables.json
+
+[syntaxsql]
+# Note: Use absolute paths, as relative paths may break!
+models_path = generated_data_augment/saved_models/
+glove_path = glove/

@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block title %}Tasks{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='scripts/tasks.js') }}"></script>
+{% endblock %}
+{% block content %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Tasks</li>
+    </ol>
+  </nav>
+  <div class='mb-3'>
+    <a href="{{ url_for('tasks_new', tsq_level='default') }}" class='btn btn-primary'>+ New Duoquest Task</a>
+    <a href="{{ url_for('tasks_new', tsq_level='nlq_only') }}" class='btn btn-secondary'>+ New NLQ Task</a>
+  </div>
+  <table class='table table-sm'>
+    <tr>
+      <th>Task ID</th>
+      <th>Type</th>
+      <th>Database</th>
+      <th>NLQ</th>
+      <th>Status</th>
+      <th>Error Message</th>
+      <th>Rerun</th>
+      <th>Delete</th>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+      <td>
+        <a href='{{ url_for("task", tid=task["tid"]) }}'>{{ task['tid'] }}</a>
+      </td>
+      <td>{% if task['tsq_proto'] %}Duoquest{% else %}NLQ Only{% endif %}</td>
+      <td>{{ task['db'] }}</td>
+      <td>{{ task['nlq'] }}</td>
+      <td>
+        {% include 'components/task_status.html' %}
+      </td>
+      <td>{{ task['error_msg'] }}</td>
+      <td>
+        <button data-tid='{{ task["tid"] }}' class="rerun-task btn btn-block btn-secondary btn-sm"
+        {% if task['status'] == 'waiting' or task['status'] == 'running' %}disabled{% endif %}>
+          Rerun
+        </button>
+      </td>
+      <td>
+        <button data-tid='{{ task["tid"] }}' class="del-task btn btn-block btn-danger btn-sm"
+        {% if task['status'] == 'running' %}disabled{% endif %}>Delete</button>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

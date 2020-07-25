@@ -1,0 +1,12 @@
+{
+  "dimensionObject": ["owners", "dogs", "professionals", "breeds"],
+  "dimensionConcept": ["sizes", "treatment_types", "charges"],
+  "factObjectObject": ["owners_to_dogs", "dogs_to_breeds", "treatments"],
+  "factObjectConcept": ["dogs_to_sizes"],
+  "conceptWithinDimension": [],
+  "primaryAttributeWithinDimension": ["breeds:breed_code", "charges:charge_type",
+    "sizes:size_code", "treatment_types:treatment_type_description", "owners:first_name",
+    "dogs:name", "professionals:first_name"],
+  "additionalFreqConcept": [],
+  "attributeChanges": []
+}

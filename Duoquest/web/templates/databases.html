@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block title %}Databases{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='scripts/databases.js') }}"></script>
+{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Databases</li>
+  </ol>
+</nav>
+<h3>New Database</h3>
+<form id='database-form' action='{{ url_for("databases_new") }}' method='POST'
+  enctype='multipart/form-data' class='mb-3'>
+  <div class='form-group'>
+    <label for='db-name-input'>Database name</label>
+    <input id='db-name-input' name='db_name' class='form-control' type='text' />
+  </div>
+  <div class="custom-file mb-3">
+    <input type="file" class="custom-file-input" id="db-file" accept=".sqlite" name="db_file" />
+    <label class="custom-file-label" for="db-file">Database file (.sqlite)</label>
+  </div>
+  <input type='submit' class='form-submit btn btn-primary btn-block' value='Add database >' />
+</form>
+<h3>Databases</h3>
+<table class='table table-sm'>
+  <tr>
+    <th>Name</th>
+    <th>Path</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+  {% for db in databases %}
+  <tr>
+    <td>{{ db['name'] }}</td>
+    <td><small>{{ db['path'] }}</small></td>
+    <td><a href='{{ url_for("database_edit", name=db["name"]) }}' class='btn btn-primary btn-sm'>Edit</a></td>
+    <td><a href='{{ url_for("database_delete", name=db["name"]) }}' class='btn btn-danger btn-sm'>Delete</a></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

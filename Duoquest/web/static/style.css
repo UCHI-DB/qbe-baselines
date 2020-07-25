@@ -1,0 +1,49 @@
+main.container {
+  margin-top: 75px;
+}
+
+.tsq {
+  width: auto;
+}
+
+.tsq td, .tsq th {
+  width: 150px;
+  height: 49px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#task-results .card-header {
+  line-height: 30px;
+}
+
+#task-results .result-info {
+  padding: 15px;
+}
+
+.ui-autocomplete {
+  list-style-type: none;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 0px;
+  max-width: 150px;
+}
+
+.ui-autocomplete .ui-menu-item-wrapper {
+  background: #fff;
+  padding: 3px 10px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.ui-autocomplete .ui-state-active {
+  background: #b8daff;
+}
+
+.ui-helper-hidden-accessible {
+  display: none;
+}
+
+.custom-file-input {
+  cursor: pointer;
+}

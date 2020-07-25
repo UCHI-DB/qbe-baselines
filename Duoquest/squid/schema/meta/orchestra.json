@@ -1,0 +1,10 @@
+{
+  "dimensionObject": ["orchestra", "performance", "conductor", "show"],
+  "dimensionConcept": [],
+  "factObjectObject": ["orchestra_to_conductor"],
+  "factObjectConcept": [],
+  "conceptWithinDimension": [],
+  "primaryAttributeWithinDimension": ["conductor:name", "orchestra:orchestra"],
+  "additionalFreqConcept": [],
+  "attributeChanges": []
+}
