@@ -18,15 +18,27 @@
 In CLI, Run the following commands:
 
 * `createdb`
+
+  * If it does not work, try `brew services start postgresql`. ([Reference](https://stackoverflow.com/questions/13573204/psql-could-not-connect-to-server-no-such-file-or-directory-mac-os-x))
+
 * `psql -h localhost -c "create user $USER with login;"`
+
 * `psql -h localhost -c "alter user $USER with password '123456';"`
+
 * `psql -h localhost -c "create database $USER;"`
+
 * `psql -h localhost -c "create database dblp;"`
+
 * `psql -h localhost -c "alter database dblp owner to $USER;"`
+
 * `psql -h localhost -c "create database smallimdb;"`
+
 * `psql -h localhost -c "alter database smallimdb owner to $USER;"`
+
 * `cd squid-public/data`
+
 * `psql -U $USER dblp < dblp.sql`
+
 * `psql -U $USER smallimdb < smallimdb.sql`
 
 	
@@ -39,6 +51,7 @@ In CLI, run the following commands:
 * `javac -cp "lib/*" --module-path $PATH_TO_FX --add-modules=javafx.controls,javafx.fxml --add-exports javafx.base/com.sun.javafx.event=ALL-UNNAMED -d bin src/**/*.java`
 * `java -cp "bin:lib/*" --module-path $PATH_TO_FX --add-modules=javafx.controls,javafx.fxml --add-exports javafx.base/com.sun.javafx.event=ALL-UNNAMED main.Gui --dbName smallimdb --dbUser <username> --dbPassword <password> --pgDumpPath <path to pg_dump> --logLvl FINE --rho 0.1 --eta 100.0 --gamma 2 --tau_a 5 --filterRelaxActive --disambiguateActive --useSkewness --tau_s 2`
 	* You should put your __postgres DB username__, __password__, and __path to `pg_dump`__ (which can be found using `which pg_dump` command in CLI).
+	* `java -cp "bin:lib/*" --module-path $PATH_TO_FX --add-modules=javafx.controls,javafx.fxml --add-exports javafx.base/com.sun.javafx.event=ALL-UNNAMED main.Gui --dbName smallimdb --dbUser mac --dbPassword 123456 --pgDumpPath /usr/local/bin/pg_dump --logLvl FINE --rho 0.1 --eta 100.0 --gamma 2 --tau_a 5 --filterRelaxActive --disambiguateActive --useSkewness --tau_s 2`
 * You should see a GUI.
 * Try with some toy inputs like: Tom Cruise, Tom Hanks, Leonardo DiCaprio. Add one in a row.
 
