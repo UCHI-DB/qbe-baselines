@@ -57,10 +57,27 @@
 
 |          | Join | Projection | Selection | Aggregation |
 | -------- | :--: | :--------: | :-------: | :---------: |
-| S4       |  ⭕️   |            |           |             |
+| S4       |  ⭕️   |     ⭕️      |           |             |
 | REGAL+   |  ⭕️*  |     ⭕️      |     ⭕️     |      ⭕️      |
 | FastQRE  |  ⭕️   |     ⭕️      |           |             |
 | SQuID    |  ⭕️   |     ⭕️      |     ⭕️     |      ⭕️      |
 | DuoQuest |  ⭕️   |     ⭕️      |     ⭕️     |      ⭕️      |
 
 *REGAL does not support join queries, but REGAL+ does.
+
+
+
+##### Input
+
+|          |                          User Input                          |
+| -------- | :----------------------------------------------------------: |
+| S4       |                        Example Table                         |
+| REGAL+   |                         Output Table                         |
+| FastQRE  |                         Output Table                         |
+| SQuID    |                        Example Table                         |
+| DuoQuest | Query Discription, [Example Table, Sorted Flag and Limit Number] |
+
+
+
+
+
